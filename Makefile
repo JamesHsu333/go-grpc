@@ -1,7 +1,7 @@
 .PHONY: migrate migrate_down migrate_up migrate_version docker prod docker_delve local swaggo test
 VERSION ?= $(shell git describe --tags --always)
 BUILD_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-LDFLAGS ?= -X github.com/JamesHsu333/go-rest/pkg/version.Version=$(VERSION) -X github.com/JamesHsu333/go-rest/pkg/version.BuildDate=$(BUILD_DATE)
+LDFLAGS ?= -X github.com/JamesHsu333/go-grpc/pkg/version.Version=$(VERSION) -X github.com/JamesHsu333/go-grpc/pkg/version.BuildDate=$(BUILD_DATE)
 
 # Main
 run:
