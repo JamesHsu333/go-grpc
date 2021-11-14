@@ -1,0 +1,10 @@
+kind: pipeline
+type: docker
+name: go-grpc
+
+steps:
+- name: golangci-lint
+  image: golangci/golangci-lint:latest
+  commands:
+    - echo "Starting linters"
+    - golangci-lint run ./...

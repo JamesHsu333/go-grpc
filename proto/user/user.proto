@@ -1,0 +1,148 @@
+// @proto/ type following command to build pb.go
+// protoc --proto_path=./ --go_out=./ --go-grpc_out=./ --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative user/user.proto
+
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "pagination/pagination.proto";
+
+package user;
+option go_package = "github.com/JamesHsu333/go-grpc/proto/user;userProto";
+
+message Session {
+  string session = 1;
+}
+
+message User {
+  string user_id = 1; //@gotags: db:"user_id"
+  string first_name = 2; //@gotags: db:"first_name"
+  string last_name = 3; //@gotags: db:"last_name"
+  string email = 4; //@gotags: db:"email"
+  string password = 5; //@gotags: db:"password"
+  string role = 6; //@gotags: db:"role"
+  string about = 7; //@gotags: db:"about,omitempty"
+  string avatar = 8; //@gotags: db:"avatar,omitempty"
+  string phone_number = 9; //@gotags: db:"phone_number,omitempty"
+  string address = 10; //@gotags: db:"address,omitempty"
+  string city = 11; //@gotags: db:"city,omitempty"
+  string country = 12; //@gotags: db:"country,omitempty"
+  string gender = 13; //@gotags: db:"gender,omitempty"
+  int32 postcode = 14; //@gotags: db:"postcode,omitempty"
+  google.protobuf.Timestamp birthday = 15; //@gotags: db:"birthday,omitempty"
+  google.protobuf.Timestamp created_at = 16; //@gotags: db:"created_at"
+  google.protobuf.Timestamp updated_at = 17; //@gotags: db:"updated_at"
+  google.protobuf.Timestamp login_date = 18; //@gotags: db:"login_date"
+}
+
+message UsersList {
+  int32 total_count = 1;
+	int32 total_pages = 2;
+	int32 page = 3;
+	int32 size = 4;
+	bool has_more = 5;
+  repeated User users = 6;
+}
+
+message UploadInput {
+  bytes file = 1;
+  string name = 2;
+	string size = 3;
+	string content_type = 4;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string password = 4;
+  string gender = 5;
+}
+
+message RegisterResponse {
+  User user = 1;
+}
+
+message FindByNameRequest {
+  string name = 1;
+  pagination.Pagination pagination = 2;
+}
+
+message FindByNameResponse {
+  UsersList users = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  User user = 1;
+  string session_id = 2;
+}
+
+message GetMeRequest{}
+
+message GetMeResponse {
+  User user = 1;
+}
+
+message GetUserByIDRequest {
+  string user_id = 1;
+}
+
+message GetUserByIDResponse {
+  User user = 1;
+}
+
+message GetUsersRequest {
+  pagination.Pagination pagination = 1;
+}
+
+message GetUsersResponse {
+  UsersList users = 1;
+}
+
+message UpdateRequest {
+  User user = 1;
+}
+
+message UpdateResponse {
+  User user = 1;
+}
+
+message UpdateRoleRequest {
+  User user = 1;
+}
+
+message UpdateRoleResponse {
+  User user = 1;
+}
+
+message UploadAvatar {
+  string user_id = 1;
+  UploadInput upload_input = 2;
+}
+
+message DeleteRequest {
+  string user_id = 1;
+}
+
+message DeleteResponse {}
+
+message LogoutRequest{}
+
+message LogoutResponse {}
+
+service UserService{
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc FindByName(FindByNameRequest) returns (FindByNameResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc GetMe(GetMeRequest) returns(GetMeResponse);
+  rpc GetUserByID(GetUserByIDRequest) returns(GetUserByIDResponse);
+  rpc GetUsers(GetUsersRequest) returns(GetUsersResponse);
+  rpc Update(UpdateRequest) returns(UpdateResponse);
+  rpc UpdateRole(UpdateRoleRequest) returns(UpdateRoleResponse);
+  rpc Delete(DeleteRequest) returns(DeleteResponse);
+  rpc Logout(LogoutRequest) returns(LogoutResponse);
+}
